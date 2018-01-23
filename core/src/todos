@@ -1,0 +1,21 @@
+Figure out module inheritance structure _/
+repair currently extant modules _/
+
+root display module should not be heatmap. create root display module _/
+create implementors directory for things like heatmap: forked mostly final builds that do a thing _/
+test new code _/
+
+CHECKIN
+
+
+
+POTENTIAL FUTURE
+
+put listeners in a kdtree for lookup by interested area
+
+create display class and use it to manage a view + screen
+allow display to modify a view on a given screen and vice versa
+
+POTENTIAL PROBLEMS
+
+grid seems to be centered at bottom left rather than top left (and the display at top left). not clear if this is a problem
