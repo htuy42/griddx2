@@ -15,10 +15,8 @@ public class BasicDisplayModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(Renderer.class).to(SimpleHeightmapRenderer.class);
-        bind(Integer.class).annotatedWith(Names.named("View Width, Tiles")).toInstance(100);
-        bind(Integer.class).annotatedWith(Names.named("View Height, Tiles")).toInstance(100);
-        bind(Integer.class).annotatedWith(Names.named("Screen Width, Pixels")).toInstance(900);
-        bind(Integer.class).annotatedWith(Names.named("Screen Height, Pixels")).toInstance(900);
+        bind(Integer.class).annotatedWith(Names.named("View Width, Tiles")).toInstance(250);
+        bind(Integer.class).annotatedWith(Names.named("View Height, Tiles")).toInstance(250);
         bind(MouseInputProvider.class).to(BasicInputProvider.class);
     }
 

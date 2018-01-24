@@ -51,6 +51,12 @@ public class Point {
 
     public int manhattanDistanceTo(Point other) {
         return Math.abs(other.getX() - x) + Math.abs(other.getY() - y);
+    }
 
+    public double trueDistanceTo(Point other){
+        int dx = other.getX() - x;
+        int dy = other.getY() - y;
+
+        return Math.sqrt(dx * dx + dy * dy);
     }
 }

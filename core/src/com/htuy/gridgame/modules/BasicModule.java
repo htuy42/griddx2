@@ -1,5 +1,6 @@
 package com.htuy.gridgame.modules;
 
+import com.badlogic.gdx.Gdx;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import com.htuy.gridgame.cell.BasicCell;
@@ -14,7 +15,7 @@ import com.htuy.gridgame.world.GridWorld;
 
 public class BasicModule extends AbstractModule {
 
-    static final int MAX_CELL_HEIGHT = 100;
+    static final int MAX_CELL_HEIGHT = 125;
     static final int MIN_CELL_HEIGHT = 0;
 
     @Override
@@ -26,8 +27,8 @@ public class BasicModule extends AbstractModule {
         bind(CellGenerator.class).toInstance(new CopyGenerator(BasicCell.class));
         bind(Integer.class).annotatedWith(Names.named("View Width, Tiles")).toInstance(100);
         bind(Integer.class).annotatedWith(Names.named("View Height, Tiles")).toInstance(100);
-        bind(Integer.class).annotatedWith(Names.named("Screen Width, Pixels")).toInstance(900);
-        bind(Integer.class).annotatedWith(Names.named("Screen Height, Pixels")).toInstance(900);
+        bind(Integer.class).annotatedWith(Names.named("Screen Width, Pixels")).toInstance(Gdx.graphics.getWidth());
+        bind(Integer.class).annotatedWith(Names.named("Screen Height, Pixels")).toInstance(Gdx.graphics.getHeight());
         bind(TextOutput.class).to(SystemOutput.class);
     }
 

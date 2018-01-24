@@ -18,6 +18,6 @@ public class DistanceHeatCell implements Cell {
 
     @Override
     public void tick(GridProvider provider, Point ownLocation) {
-        height = ownLocation.manhattanDistanceTo(main.inputRegistry.getCurrentMouseScreenLocation());
+        height = (int)Math.floor(ownLocation.trueDistanceTo(main.inputRegistry.getCurrentMouseScreenLocation()));
     }
 }

@@ -18,6 +18,9 @@ public class main extends ApplicationAdapter {
     private GridWorld world;
     public static MouseInputProvider inputRegistry;
 
+    float sm = 0;
+    int cnt = 0;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -36,6 +39,16 @@ public class main extends ApplicationAdapter {
         batch.begin();
         world.render();
         batch.end();
+        handleFps();
+    }
+
+    private void handleFps(){
+        //in theory would eventually wrap and fail. We don't care.
+        sm += Gdx.graphics.getRawDeltaTime();
+        cnt += 1;
+        if(cnt % 100 == 0){
+            System.out.println(1 / (sm / cnt));
+        }
     }
 
 
