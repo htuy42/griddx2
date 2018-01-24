@@ -6,7 +6,6 @@ import org.junit.Before;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,18 +24,10 @@ public class FuncToolsTest {
         final int[] counterOuter = {0};
         final int[] counterInner = {0};
         FuncTools.wrap(
-                new Runnable() {
-                           @Override
-                           public void run() {
-                               counterOuter[0] += 1;
-                           }
-                       },
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        assertEquals(counterOuter[0], 1);
-                        counterInner[0] += 1;
-                    }
+                () -> counterOuter[0] += 1,
+                () -> {
+                    assertEquals(counterOuter[0], 1);
+                    counterInner[0] += 1;
                 });
         assertEquals(counterInner[0], 1);
         assertEquals(counterOuter[0], 2);
@@ -50,12 +41,7 @@ public class FuncToolsTest {
             int width = random.nextInt(10);
             int height = random.nextInt(10);
             Set<Point> pointsEncountered = new HashSet<>();
-            FuncTools.rectIter(new Point(startX, startY), width, height, new BiConsumer<Integer, Integer>() {
-                @Override
-                public void accept(Integer x, Integer y) {
-                    pointsEncountered.add(new Point(x, y));
-                }
-            });
+            FuncTools.rectIter(new Point(startX, startY), width, height, (x, y) -> pointsEncountered.add(new Point(x, y)));
             for (int x = startX; x < startX + width; x++) {
                 for (int y = startY; y < startY + height; y++) {
                     assert (pointsEncountered.contains(new Point(x, y)));

@@ -1,12 +1,9 @@
 package com.htuy.gridgame.display;
 
-import com.badlogic.gdx.graphics.Color;
 import com.htuy.gridgame.geom_tools.Point;
-import com.htuy.gridgame.renderer.display_renderer.ColorProvider;
-import com.htuy.gridgame.renderer.display_renderer.SimpleHeightmapRenderer;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DisplayTest {
 
@@ -15,7 +12,7 @@ public class DisplayTest {
     public void getCellSizeTest() {
         View v = new View(new Point(0, 0), 10, 10);
         Screen s = new Screen(100, 100);
-        Display d = new Display(v,s);
+        Display d = new Display(v, s);
 
         assertEquals(d.getCellSize(), 10);
         d.setViewWidth(5);

@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Point {
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
 
     public Point(int x, int y) {
@@ -13,24 +13,16 @@ public class Point {
         this.y = y;
     }
 
-    public int getX() {
-        return x;
+    public Point withDx(int dx) {
+        return withDeltas(dx, 0);
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public Point withDx(int dx){
-        return withDeltas(dx,0);
-    }
-
-    public Point withDy(int dy){
-        return withDeltas(0,dy);
-    }
-
-    public Point withDeltas(int dx, int dy){
+    private Point withDeltas(int dx, int dy) {
         return new Point(x + dx, y + dy);
+    }
+
+    public Point withDy(int dy) {
+        return withDeltas(0, dy);
     }
 
     public int hashCode() {
@@ -45,7 +37,7 @@ public class Point {
         return p.x == x && p.y == y;
     }
 
-    public String toString(){
+    public String toString() {
         return x + "," + y;
     }
 
@@ -53,7 +45,15 @@ public class Point {
         return Math.abs(other.getX() - x) + Math.abs(other.getY() - y);
     }
 
-    public double trueDistanceTo(Point other){
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public double trueDistanceTo(Point other) {
         int dx = other.getX() - x;
         int dy = other.getY() - y;
 

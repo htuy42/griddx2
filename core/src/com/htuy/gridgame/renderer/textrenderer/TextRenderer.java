@@ -6,14 +6,13 @@ import com.htuy.gridgame.cell.Cell;
 import com.htuy.gridgame.display.Display;
 import com.htuy.gridgame.gridprovider.GridProvider;
 import com.htuy.gridgame.gridprovider.IterTools;
-import com.htuy.gridgame.display.View;
 import com.htuy.gridgame.renderer.Renderer;
 
 import java.util.List;
 
 public class TextRenderer implements Renderer {
 
-    private boolean usePadding;
+    private final boolean usePadding;
     private String paddingString;
     private TextOutput output;
 
@@ -30,9 +29,7 @@ public class TextRenderer implements Renderer {
 
     @Override
     public void render(GridProvider provider, Display display) {
-        FuncTools.wrap(this::printPadding, () -> {
-            IterTools.IterRows(provider, display.getView(), this::outputRow);
-        });
+        FuncTools.wrap(this::printPadding, () -> IterTools.iterRows(provider, display.getView(), this::outputRow));
     }
 
 

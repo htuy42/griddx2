@@ -5,33 +5,33 @@ import com.htuy.gridgame.geom_tools.Point;
 
 public class Display {
 
-    private View view;
-    private Screen screen;
+    private final View view;
+    private final Screen screen;
     private int cellSize;
 
     @Inject
-    public Display(View view, Screen screen){
+    public Display(View view, Screen screen) {
         this.view = view;
         this.screen = screen;
         computeCellSize();
     }
 
-    public Point toViewLoc(Point point) {
-        return screen.toGridLocation(point,view,getCellSize());
-    }
-
-    public View getView() {
-        return view;
-    }
-
-    private void computeCellSize(){
+    private void computeCellSize() {
         int xSize = screen.getWidth() / view.getWidth();
         int ySize = screen.getHeight() / view.getHeight();
-        this.cellSize = Math.min(xSize,ySize);
+        this.cellSize = Math.min(xSize, ySize);
+    }
+
+    public Point toViewLoc(Point point) {
+        return screen.toGridLocation(point, view, getCellSize());
     }
 
     public int getCellSize() {
         return cellSize;
+    }
+
+    public View getView() {
+        return view;
     }
 
     public void setViewWidth(int width) {
@@ -39,23 +39,23 @@ public class Display {
         computeCellSize();
     }
 
-    public void setViewHeight(int height){
+    public void setViewHeight(int height) {
         this.view.setHeight(height);
         computeCellSize();
     }
 
-    public void setScreenWidth(int width){
+    public void setScreenWidth(int width) {
         this.screen.setWidth(width);
         computeCellSize();
     }
 
-    public void setScreenHeight(int height){
+    public void setScreenHeight(int height) {
         this.screen.setHeight(height);
         computeCellSize();
     }
 
     public Point toScreenLocation(Point point) {
-        return screen.toScreenLocation(point,view,getCellSize());
+        return screen.toScreenLocation(point, view, getCellSize());
 
     }
 

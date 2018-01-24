@@ -11,16 +11,15 @@ import com.htuy.gridgame.renderer.textrenderer.TextRenderer;
 import com.htuy.gridgame.world.BasicWorld;
 import com.htuy.gridgame.world.GridWorld;
 
-public class BasicTextModule extends AbstractModule implements ChildModule{
+class BasicTextModule extends AbstractModule {
+    public static Module getInstance() {
+        return Modules.override(new BasicModule()).with(new BasicTextModule());
+    }
+
     @Override
     protected void configure() {
         bind(Renderer.class).to(TextRenderer.class);
         bind(CellGenerator.class).toInstance(new CopyGenerator(BasicCell.class));
         bind(GridWorld.class).to(BasicWorld.class);
-    }
-
-    @Override
-    public Module getInstance() {
-        return Modules.override(new BasicModule()).with(new BasicTextModule());
     }
 }

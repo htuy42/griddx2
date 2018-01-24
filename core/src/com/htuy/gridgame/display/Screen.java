@@ -10,26 +10,26 @@ public class Screen {
     private int width;
 
     @Inject
-    public Screen(@Named("Screen Width, Pixels") int width, @Named("Screen Height, Pixels") int height){
+    public Screen(@Named("Screen Width, Pixels") int width, @Named("Screen Height, Pixels") int height) {
         //assumes that it begins at 0,0 implicitly, and cannot provide other functionality
         this.height = height;
         this.width = width;
     }
 
-    public Point toScreenLocation(Point loc, View context, int cellSize){
+    public Point toScreenLocation(Point loc, View context, int cellSize) {
 
 
         int xTrans = loc.getX() - context.getLoc().getX();
         int yTrans = loc.getY() - context.getLoc().getY();
-        return new Point(xTrans * cellSize,yTrans * cellSize);
+        return new Point(xTrans * cellSize, yTrans * cellSize);
     }
 
-    public Point toGridLocation(Point loc, View context, int cellSize){
+    public Point toGridLocation(Point loc, View context, int cellSize) {
 
 
         int xLoc = loc.getX() / cellSize;
         int yLoc = loc.getY() / cellSize;
-        return new Point(xLoc + context.getLoc().getX(),yLoc + context.getLoc().getY());
+        return new Point(xLoc + context.getLoc().getX(), yLoc + context.getLoc().getY());
     }
 
 
@@ -37,12 +37,12 @@ public class Screen {
         return height;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
     void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     void setWidth(int width) {

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public class IterTools {
 
-    public static void IterRows(GridProvider provider, View view, Consumer<List<Cell>> iterFunc) {
+    public static void iterRows(GridProvider provider, View view, Consumer<List<Cell>> iterFunc) {
         GridRowProvider rowProvider = GridRowProvider.toRowProvider(provider);
         for (int y = view.getLoc().getY(); y < view.getLoc().getY() + view.getHeight(); y++) {
             iterFunc.accept(rowProvider.getRow(new Point(view.getLoc().getX(), y), view.getWidth()));

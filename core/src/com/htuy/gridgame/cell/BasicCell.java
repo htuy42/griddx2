@@ -4,9 +4,9 @@ import java.util.Random;
 
 public class BasicCell implements Cell {
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
-    private int height;
+    private final int height;
 
     public BasicCell(int height) {
         this.height = height;

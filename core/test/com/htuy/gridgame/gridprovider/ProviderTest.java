@@ -1,6 +1,5 @@
 package com.htuy.gridgame.gridprovider;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -15,7 +14,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 import static org.junit.Assert.assertEquals;
@@ -23,9 +21,9 @@ import static org.junit.Assert.assertEquals;
 
 public class ProviderTest {
 
-    private static List<Module> allModules;
+    private static final List<Module> allModules;
 
-    static{
+    static {
         allModules = new ArrayList<>();
         allModules.add(TestTextModule.getInstance(FlatDictProvider.class));
         allModules.add(TestTextModule.getInstance(ArrayProvider2d.class));
@@ -35,7 +33,7 @@ public class ProviderTest {
     private Random random;
 
     @Test
-    public void orchestrateTests() throws Exception{
+    public void orchestrateTests() throws Exception {
         random = new Random();
         for (Module mod : allModules) {
             System.out.println(mod.toString());
@@ -45,7 +43,7 @@ public class ProviderTest {
         }
     }
 
-    private void runTests() throws Exception{
+    private void runTests() throws Exception {
         getCell();
         setCell();
         save();
@@ -56,20 +54,17 @@ public class ProviderTest {
         getFullView();
     }
 
-    public void getCell() throws Exception {
-        testCellFunction(new BiFunction<Integer, Integer, Boolean>() {
-            @Override
-            public Boolean apply(Integer x, Integer y) {
-                if (provider.hasCell(x, y)) {
-                    Cell c = provider.getCell(x, y);
-                    return c.getHeight() == y * TestTextModule.VIEW_WIDTH + x;
-                }
-                return false;
+    private void getCell() {
+        testCellFunction((x, y) -> {
+            if (provider.hasCell(x, y)) {
+                Cell c = provider.getCell(x, y);
+                return c.getHeight() == y * TestTextModule.VIEW_WIDTH + x;
             }
+            return false;
         });
     }
 
-    public void setCell() throws Exception {
+    private void setCell() {
         assertEquals(provider.getCell(0, 0).getHeight(), 0);
         provider.setCell(new Point(0, 0), new BasicCell(2));
         assertEquals(provider.getCell(0, 0).getHeight(), 2);
@@ -77,41 +72,33 @@ public class ProviderTest {
         assertEquals(provider.getCell(0, 0).getHeight(), 0);
     }
 
-    public void save() throws Exception {
+    private void save() {
         //
     }
 
 
-    public void getCellPoint() throws Exception {
-        testCellFunction(new BiFunction<Integer, Integer, Boolean>() {
-            @Override
-            public Boolean apply(Integer x, Integer y) {
-                if (provider.hasCell(x, y)) {
-                    Cell c = provider.getCell(new Point(x, y));
-                    return c.getHeight() == y * TestTextModule.VIEW_WIDTH + x;
-                }
-                return false;
+    private void getCellPoint() {
+        testCellFunction((x, y) -> {
+            if (provider.hasCell(x, y)) {
+                Cell c = provider.getCell(new Point(x, y));
+                return c.getHeight() == y * TestTextModule.VIEW_WIDTH + x;
             }
+            return false;
         });
     }
 
-    public void hasCell() throws Exception {
+    private void hasCell() {
         testCellFunction(provider::hasCell);
     }
 
-    public void hasCellPoint() throws Exception {
-        testCellFunction(new BiFunction<Integer, Integer, Boolean>() {
-            @Override
-            public Boolean apply(Integer x, Integer y) {
-                return provider.hasCell(new Point(x, y));
-            }
-        });
+    private void hasCellPoint() {
+        testCellFunction((x, y) -> provider.hasCell(new Point(x, y)));
     }
 
-    public void iterCells() throws Exception {
+    private void iterCells() {
     }
 
-    public void getFullView() throws Exception {
+    private void getFullView() {
         View v = provider.getFullView();
         assert (v.getLoc().getY() == 0);
         assert (v.getLoc().getX() == 0);
@@ -119,12 +106,9 @@ public class ProviderTest {
         assert (v.getHeight() == TestTextModule.VIEW_HEIGHT);
     }
 
-    public void testCellFunction(BiFunction<Integer, Integer, Boolean> test) {
-        FuncTools.rectIter(new Point(0, 0), TestTextModule.VIEW_WIDTH, TestTextModule.VIEW_HEIGHT, new BiConsumer<Integer, Integer>() {
-            @Override
-            public void accept(Integer x, Integer y) {
-                assert (test.apply(x, y));
-            }
+    private void testCellFunction(BiFunction<Integer, Integer, Boolean> test) {
+        FuncTools.rectIter(new Point(0, 0), TestTextModule.VIEW_WIDTH, TestTextModule.VIEW_HEIGHT, (x, y) -> {
+            assert (test.apply(x, y));
         });
         for (int i = 0; i < 1000000; i++) {
             int x = random.nextInt();

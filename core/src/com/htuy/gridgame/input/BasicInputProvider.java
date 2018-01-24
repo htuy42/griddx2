@@ -1,9 +1,7 @@
 package com.htuy.gridgame.input;
 
-import com.badlogic.gdx.InputProcessor;
 import com.google.inject.Inject;
 import com.htuy.gridgame.display.Display;
-import com.htuy.gridgame.display.View;
 import com.htuy.gridgame.geom_tools.Point;
 
 import java.util.ArrayList;
@@ -12,13 +10,13 @@ import java.util.List;
 
 public class BasicInputProvider implements MouseInputProvider {
     private final Display display;
-    private List<MouseLocListener> clickListeners;
-    private List<MouseLocListener> moveListeners;
+    private final List<MouseLocListener> clickListeners;
+    private final List<MouseLocListener> moveListeners;
     private Point mouseGridLoc;
 
     @Inject
-    public BasicInputProvider(Display display){
-        this.mouseGridLoc = new Point(0,0);
+    public BasicInputProvider(Display display) {
+        this.mouseGridLoc = new Point(0, 0);
         this.clickListeners = new ArrayList<>();
         this.moveListeners = new ArrayList<>();
         this.display = display;
@@ -56,9 +54,13 @@ public class BasicInputProvider implements MouseInputProvider {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Point realLoc = transformToTopLeft(new Point(screenX,screenY));
+        Point realLoc = transformToTopLeft(new Point(screenX, screenY));
         iterateApply(clickListeners, realLoc);
         return true;
+    }
+
+    private Point transformToTopLeft(Point original) {
+        return new Point(original.getX(), display.getScreen().getHeight() - original.getY());
     }
 
     private void iterateApply(List<MouseLocListener> listeners, Point p) {
@@ -73,10 +75,6 @@ public class BasicInputProvider implements MouseInputProvider {
         }
     }
 
-    public Point transformToTopLeft(Point original){
-        return new Point(original.getX(),display.getScreen().getHeight() - original.getY());
-    }
-
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return false;
@@ -89,7 +87,7 @@ public class BasicInputProvider implements MouseInputProvider {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Point realLoc = transformToTopLeft(new Point(screenX,screenY));
+        Point realLoc = transformToTopLeft(new Point(screenX, screenY));
         this.mouseGridLoc = display.toViewLoc(realLoc);
         iterateApply(moveListeners, realLoc);
         return true;

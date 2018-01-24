@@ -4,6 +4,6 @@ import com.htuy.gridgame.geom_tools.Point;
 
 public interface CellGenerator {
 
-    public Cell nextCell(Point loc);
+    Cell nextCell(Point loc);
 
 }

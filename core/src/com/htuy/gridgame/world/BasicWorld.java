@@ -1,19 +1,15 @@
 package com.htuy.gridgame.world;
 
-import com.htuy.gridgame.cell.Cell;
 import com.htuy.gridgame.display.Display;
-import com.htuy.gridgame.geom_tools.Point;
 import com.htuy.gridgame.gridprovider.GridProvider;
-import com.htuy.gridgame.display.View;
 import com.htuy.gridgame.renderer.Renderer;
 
 import javax.inject.Inject;
-import java.util.function.BiConsumer;
 
 public class BasicWorld implements GridWorld {
-    GridProvider provider;
-    Renderer renderer;
-    Display display;
+    private final GridProvider provider;
+    private final Renderer renderer;
+    private final Display display;
 
     @Inject
     public BasicWorld(GridProvider provider, Renderer renderer, Display display) {
@@ -25,12 +21,7 @@ public class BasicWorld implements GridWorld {
 
     @Override
     public void tick() {
-        provider.iterCells(new BiConsumer<Point, Cell>() {
-            @Override
-            public void accept(Point point, Cell cell) {
-                cell.tick(provider, point);
-            }
-        });
+        provider.iterCells((point, cell) -> cell.tick(provider, point));
     }
 
     @Override

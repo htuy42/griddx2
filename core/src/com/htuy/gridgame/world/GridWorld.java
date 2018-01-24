@@ -2,8 +2,8 @@ package com.htuy.gridgame.world;
 
 public interface GridWorld {
 
-    public void tick();
+    void tick();
 
-    public void render();
+    void render();
 
 }

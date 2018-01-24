@@ -13,10 +13,10 @@ import com.htuy.gridgame.renderer.textrenderer.TextOutput;
 import com.htuy.gridgame.world.BasicWorld;
 import com.htuy.gridgame.world.GridWorld;
 
-public class BasicModule extends AbstractModule {
+class BasicModule extends AbstractModule {
 
-    static final int MAX_CELL_HEIGHT = 125;
-    static final int MIN_CELL_HEIGHT = 0;
+    private static final int MAX_CELL_HEIGHT = 125;
+    private static final int MIN_CELL_HEIGHT = 0;
 
     @Override
     protected void configure() {
@@ -31,7 +31,6 @@ public class BasicModule extends AbstractModule {
         bind(Integer.class).annotatedWith(Names.named("Screen Height, Pixels")).toInstance(Gdx.graphics.getHeight());
         bind(TextOutput.class).to(SystemOutput.class);
     }
-
 
 
 }

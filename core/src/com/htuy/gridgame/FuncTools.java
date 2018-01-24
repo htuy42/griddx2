@@ -14,16 +14,16 @@ public class FuncTools {
         wrapper.run();
     }
 
+    public static void rectIter(int width, int height, BiConsumer<Integer, Integer> perform) {
+        rectIter(new Point(0, 0), width, height, perform);
+    }
+
     public static void rectIter(Point start, int width, int height, BiConsumer<Integer, Integer> perform) {
         for (int y = start.getY(); y < start.getY() + height; y++) {
             for (int x = start.getX(); x < start.getX() + width; x++) {
                 perform.accept(x, y);
             }
         }
-    }
-
-    public static void rectIter(int width, int height, BiConsumer<Integer,Integer> perform){
-        rectIter(new Point(0,0),width,height,perform);
     }
 
 }

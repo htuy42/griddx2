@@ -24,26 +24,23 @@ public class ArrayProvider2d implements GridRowProvider {
         this.width = width;
         this.height = height;
         this.cells = new ArrayList<>();
-        FuncTools.rectIter(width, height, new BiConsumer<Integer, Integer>() {
-            @Override
-            public void accept(Integer x, Integer y) {
-                if(cells.size() <= y){
-                    cells.add(new ArrayList<>());
-                }
-                cells.get(y).add(generator.nextCell(new Point(x,y)));
+        FuncTools.rectIter(width, height, (x, y) -> {
+            if (cells.size() <= y) {
+                cells.add(new ArrayList<>());
             }
+            cells.get(y).add(generator.nextCell(new Point(x, y)));
         });
     }
 
 
     @Override
     public Cell getCell(Point toGet) {
-        return getCell(toGet.getX(),toGet.getY());
+        return getCell(toGet.getX(), toGet.getY());
     }
 
     @Override
     public void setCell(Point toSet, Cell setAs) {
-        cells.get(toSet.getY()).set(toSet.getX(),setAs);
+        cells.get(toSet.getY()).set(toSet.getX(), setAs);
     }
 
     @Override
@@ -58,7 +55,7 @@ public class ArrayProvider2d implements GridRowProvider {
 
     @Override
     public boolean hasCell(Point toGet) {
-        return hasCell(toGet.getX(),toGet.getY());
+        return hasCell(toGet.getX(), toGet.getY());
     }
 
     @Override
@@ -69,10 +66,10 @@ public class ArrayProvider2d implements GridRowProvider {
     @Override
     public void iterCells(BiConsumer<Point, Cell> execute) {
         int y = 0;
-        for(List<Cell> lst : cells){
+        for (List<Cell> lst : cells) {
             int x = 0;
-            for(Cell c : lst){
-                execute.accept(new Point(x,y),c);
+            for (Cell c : lst) {
+                execute.accept(new Point(x, y), c);
                 x++;
             }
             y++;
@@ -81,14 +78,14 @@ public class ArrayProvider2d implements GridRowProvider {
 
     @Override
     public View getFullView() {
-        return new View(new Point(0,0),width,height);
+        return new View(new Point(0, 0), width, height);
     }
 
     @Override
     public List<Cell> getRow(Point start, int width) {
-        if(start.getX() == 0 && (width == -1 || width == this.width)){
+        if (start.getX() == 0 && (width == -1 || width == this.width)) {
             return cells.get(start.getY());
         }
-        return cells.get(start.getY()).subList(start.getX(),start.getX() + width);
+        return cells.get(start.getY()).subList(start.getX(), start.getX() + width);
     }
 }

@@ -12,12 +12,12 @@ public class View {
 
     @Inject
     public View(@Named("View Width, Tiles") int width, @Named("View Height, Tiles") int height) {
-        this.loc = new Point(0,0);
+        this.loc = new Point(0, 0);
         this.height = height;
         this.width = width;
     }
 
-    public View(Point loc, int width, int height){
+    public View(Point loc, int width, int height) {
         this.loc = loc;
         this.height = height;
         this.width = width;

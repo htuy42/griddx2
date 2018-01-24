@@ -5,11 +5,11 @@ import com.htuy.gridgame.gridprovider.GridProvider;
 
 public interface Cell {
 
-    public default void tick(GridProvider provider, Point ownLocation) {
+    default void tick(GridProvider provider, Point ownLocation) {
 
     }
 
-    public default int getHeight() {
+    default int getHeight() {
         return 0;
     }
 

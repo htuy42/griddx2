@@ -27,7 +27,7 @@ public interface GridRowProvider extends GridProvider {
     List<Cell> getRow(Point start, int width);
 
     class SimpleRowProvider implements GridRowProvider {
-        private GridProvider provider;
+        private final GridProvider provider;
 
         SimpleRowProvider(GridProvider provider) {
             this.provider = provider;
@@ -39,7 +39,7 @@ public interface GridRowProvider extends GridProvider {
             if (width == -1) {
                 result = new ArrayList<>();
                 Point cur = start;
-                while(provider.hasCell(cur)){
+                while (provider.hasCell(cur)) {
                     result.add(provider.getCell(cur));
                     cur = cur.withDx(1);
                 }

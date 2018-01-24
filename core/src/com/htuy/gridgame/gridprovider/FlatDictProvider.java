@@ -18,18 +18,16 @@ import java.util.function.BiConsumer;
  */
 public class FlatDictProvider implements GridProvider {
 
-    private Map<Point, Cell> cells;
-    private int width;
-    private int height;
+    private final Map<Point, Cell> cells;
+    private final int width;
+    private final int height;
 
     @Inject
     public FlatDictProvider(CellGenerator generator, @Named("View Width, Tiles") int width,
                             @Named("View Height, Tiles") int height) {
         this.cells = new HashMap<>();
         FuncTools.rectIter(new Point(0, 0), width, height,
-                (Integer x, Integer y) -> {
-                    cells.put(new Point(x, y), generator.nextCell(new Point(x,y)));
-                });
+                (Integer x, Integer y) -> cells.put(new Point(x, y), generator.nextCell(new Point(x, y))));
         this.width = width;
         this.height = height;
     }

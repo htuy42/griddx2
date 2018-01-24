@@ -23,26 +23,20 @@ public class TestTextModule extends AbstractModule {
     public static final int VIEW_HEIGHT = 15;
     private final Class<? extends GridProvider> providerClass;
 
+    private TestTextModule() {
+        this.providerClass = FlatDictProvider.class;
+    }
+
+    private TestTextModule(Class<? extends GridProvider> gridProvider) {
+        this.providerClass = gridProvider;
+    }
+
     public static Module getInstance(Class<? extends GridProvider> providerClass) {
         return Modules.override(new BasicModule()).with(new TestTextModule(providerClass));
     }
 
-    private static class TestGenerator implements CellGenerator {
-
-        private int curHeight = 0;
-
-        @Override
-        public Cell nextCell(Point p) {
-            return new BasicCell(curHeight++);
-        }
-    }
-
-    public TestTextModule(){
-        this.providerClass = FlatDictProvider.class;
-    }
-
-    public TestTextModule(Class<? extends GridProvider> gridProvider){
-        this.providerClass = gridProvider;
+    public static Module getInstance() {
+        return Modules.override(new BasicModule()).with(new TestTextModule());
     }
 
     @Override
@@ -56,12 +50,18 @@ public class TestTextModule extends AbstractModule {
         bind(TextOutput.class).to(StringAppenderOutput.class);
     }
 
-    public static Module getInstance(){
-        return Modules.override(new BasicModule()).with(new TestTextModule());
-    }
-
     @Override
     public String toString() {
         return "Test text module with " + this.providerClass.getName();
+    }
+
+    private static class TestGenerator implements CellGenerator {
+
+        private int curHeight = 0;
+
+        @Override
+        public Cell nextCell(Point p) {
+            return new BasicCell(curHeight++);
+        }
     }
 }
