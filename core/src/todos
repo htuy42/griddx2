@@ -11,6 +11,14 @@ move config property for height to the correct places / handle this correctly
 
 CHECKIN
 
+Find a better way to handle large amounts of constant values. Fine tuning module needs to exist, but at the moment it is a pain to work with them and they are scattered.
+
+Entity provider really needs to have location based lookup. Current thought: hashmap, and entities need to call
+update location when they move. Hashmap can cache zones instead of cells potentially.
+
+Finish fleshing out the alive entity framework and eater module: need to have tiered consumption system.
+
+CHECKIN
 
 POTENTIAL FUTURE
 

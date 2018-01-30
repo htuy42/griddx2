@@ -6,7 +6,7 @@ public class BasicCell implements Cell {
 
     private static final Random random = new Random();
 
-    private final int height;
+    private int height;
 
     public BasicCell(int height) {
         this.height = height;
@@ -19,6 +19,11 @@ public class BasicCell implements Cell {
     @Override
     public int getHeight() {
         return this.height;
+    }
+
+    @Override
+    public void setHeight(int i) {
+        height = i;
     }
 
     public String toString() {

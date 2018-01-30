@@ -1,17 +1,22 @@
 package com.htuy.gridgame.input;
 
+import com.badlogic.gdx.Input;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.htuy.gridgame.display.Display;
 import com.htuy.gridgame.geom_tools.Point;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class BasicInputProvider implements MouseInputProvider {
+public class BasicInputProvider implements InputProvider {
     private final Display display;
     private final List<MouseLocListener> clickListeners;
     private final List<MouseLocListener> moveListeners;
+    private final Multimap<Integer, KeyDownListener> keyDownListeners;
     private Point mouseGridLoc;
 
     @Inject
@@ -20,6 +25,7 @@ public class BasicInputProvider implements MouseInputProvider {
         this.clickListeners = new ArrayList<>();
         this.moveListeners = new ArrayList<>();
         this.display = display;
+        keyDownListeners = ArrayListMultimap.create();
     }
 
     @Override
@@ -38,7 +44,13 @@ public class BasicInputProvider implements MouseInputProvider {
     }
 
     @Override
+    public void registerKeyDownListener(int keycode, KeyDownListener listener) {
+        keyDownListeners.get(keycode).add(listener);
+    }
+
+    @Override
     public boolean keyDown(int keycode) {
+        iterateApply(keyDownListeners.get(keycode));
         return false;
     }
 
@@ -49,12 +61,14 @@ public class BasicInputProvider implements MouseInputProvider {
 
     @Override
     public boolean keyTyped(char character) {
-        return false;
+        System.out.println(character);
+        iterateApply(keyDownListeners.get(Input.Keys.valueOf(("" + character).toUpperCase())));
+        return true;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Point realLoc = transformToTopLeft(new Point(screenX, screenY));
+        Point realLoc = display.toViewLoc(transformToTopLeft(new Point(screenX, screenY)));
         iterateApply(clickListeners, realLoc);
         return true;
     }
@@ -63,16 +77,24 @@ public class BasicInputProvider implements MouseInputProvider {
         return new Point(original.getX(), display.getScreen().getHeight() - original.getY());
     }
 
-    private void iterateApply(List<MouseLocListener> listeners, Point p) {
+    private void iterateApply(Collection<MouseLocListener> listeners, Point p) {
         Iterator<MouseLocListener> i = listeners.iterator();
         while (i.hasNext()) {
             MouseLocListener listener = i.next();
             if (listener.interestedIn(p)) {
-                if (!listener.trigger(p)) {
+                if (listener.trigger(p)) {
                     i.remove();
                 }
             }
         }
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        Point realLoc = display.toViewLoc(transformToTopLeft(new Point(screenX, screenY)));
+        this.mouseGridLoc = realLoc;
+        iterateApply(moveListeners, realLoc);
+        return true;
     }
 
     @Override
@@ -85,12 +107,8 @@ public class BasicInputProvider implements MouseInputProvider {
         return false;
     }
 
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        Point realLoc = transformToTopLeft(new Point(screenX, screenY));
-        this.mouseGridLoc = display.toViewLoc(realLoc);
-        iterateApply(moveListeners, realLoc);
-        return true;
+    private void iterateApply(Collection<KeyDownListener> listeners) {
+        listeners.removeIf(KeyDownListener::trigger);
     }
 
     @Override

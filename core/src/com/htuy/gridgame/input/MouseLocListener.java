@@ -2,7 +2,7 @@ package com.htuy.gridgame.input;
 
 import com.htuy.gridgame.geom_tools.Point;
 
-interface MouseLocListener {
+public interface MouseLocListener {
 
     boolean trigger(Point loc);
 

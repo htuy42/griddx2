@@ -6,25 +6,29 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.htuy.gridgame.implementors.heatmap.BasicHeatmapModule;
-import com.htuy.gridgame.input.MouseInputProvider;
+import com.htuy.gridgame.implementors.meteros.MeterosModule;
+import com.htuy.gridgame.input.InputFunctions;
+import com.htuy.gridgame.input.InputProvider;
 import com.htuy.gridgame.world.GridWorld;
 
+
 public class main extends ApplicationAdapter {
-    public static MouseInputProvider inputRegistry;
+    public static InputProvider inputRegistry;
     private SpriteBatch batch;
     private GridWorld world;
     private float sm = 0;
     private int cnt = 0;
+    public static double LAST_DELTA;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
 
-        Injector injector = Guice.createInjector(BasicHeatmapModule.getInstance());
+        Injector injector = Guice.createInjector(MeterosModule.getInstance());
         world = injector.getInstance(GridWorld.class);
-        inputRegistry = injector.getInstance(MouseInputProvider.class);
+        inputRegistry = injector.getInstance(InputProvider.class);
         Gdx.input.setInputProcessor(inputRegistry);
+        injector.getInstance(InputFunctions.class).bindInitialInputFunctions(inputRegistry, world);
     }
 
     @Override
@@ -40,10 +44,13 @@ public class main extends ApplicationAdapter {
 
     private void handleFps() {
         //in theory would eventually wrap and fail. We don't care.
-        sm += Gdx.graphics.getRawDeltaTime();
+        LAST_DELTA = Gdx.graphics.getRawDeltaTime();
+        sm += LAST_DELTA;
         cnt += 1;
         if (cnt % 100 == 0) {
             System.out.println(1 / (sm / cnt));
+            sm = 0;
+            cnt = 0;
         }
     }
 
