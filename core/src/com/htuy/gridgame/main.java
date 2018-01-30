@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.htuy.gridgame.implementors.meteros.MeterosModule;
+import com.htuy.gridgame.implementors.orbitz.OrbitzModule;
 import com.htuy.gridgame.input.InputFunctions;
 import com.htuy.gridgame.input.InputProvider;
 import com.htuy.gridgame.world.GridWorld;
@@ -24,7 +24,7 @@ public class main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
 
-        Injector injector = Guice.createInjector(MeterosModule.getInstance());
+        Injector injector = Guice.createInjector(OrbitzModule.getInstance());
         world = injector.getInstance(GridWorld.class);
         inputRegistry = injector.getInstance(InputProvider.class);
         Gdx.input.setInputProcessor(inputRegistry);

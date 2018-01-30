@@ -3,9 +3,6 @@ package com.htuy.gridgame.implementors.meteros;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
-import com.htuy.gridgame.cell.BasicCell;
-import com.htuy.gridgame.cell.CellGenerator;
-import com.htuy.gridgame.cell.CopyGenerator;
 import com.htuy.gridgame.entity.player.MousePlayerDriver;
 import com.htuy.gridgame.entity.player.PlayerAvatar;
 import com.htuy.gridgame.geom_tools.Point;
@@ -29,7 +26,6 @@ public class MeterosModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(CellGenerator.class).toInstance(new CopyGenerator(BasicCell.class));
         bind(WorldBuilder.class).to(MeterosWorldBuilder.class);
 
         PlayerAvatar avatar = new PlayerAvatar(new Point(100, 100), 20, 5.2f);

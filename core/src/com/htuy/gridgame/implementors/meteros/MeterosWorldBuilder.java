@@ -5,6 +5,7 @@ import com.htuy.gridgame.display.View;
 import com.htuy.gridgame.entity.Entity;
 import com.htuy.gridgame.entity.EntityProvider;
 import com.htuy.gridgame.entity.Spawner;
+import com.htuy.gridgame.entity.physics_entity.GravityFaller;
 import com.htuy.gridgame.entity.player.PlayerAvatar;
 import com.htuy.gridgame.geom_tools.Point;
 import com.htuy.gridgame.gridprovider.GridProvider;
@@ -31,7 +32,7 @@ public class MeterosWorldBuilder implements WorldBuilder {
                 @Override
                 public Entity apply(Point point) {
                     Point dest = Point.randomPoint(v).withY(0);
-                    return new Meteor(point, dest);
+                    return new GravityFaller(new Meteor(point, dest), false);
                 }
             }, Point.randomPoint(v).withY(v.getHeight())));
         }
