@@ -50,8 +50,8 @@ public class BasicInputProvider implements InputProvider {
 
     @Override
     public boolean keyDown(int keycode) {
-        iterateApply(keyDownListeners.get(keycode));
-        return false;
+//        iterateApply(keyDownListeners.get(keycode));
+        return true;
     }
 
     @Override

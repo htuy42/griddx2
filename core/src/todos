@@ -20,13 +20,8 @@ Finish fleshing out the alive entity framework and eater module: need to have ti
 
 CHECKIN
 
-POTENTIAL FUTURE
+Clean up the gravity stuff. Each module wants to be able to have its own gravity values.
 
-put listeners in a kdtree for lookup by interested area
+MODULE IDEAS
 
-create display class and use it to manage a view + screen
-allow display to modify a view on a given screen and vice versa
-
-POTENTIAL PROBLEMS
-
-grid seems to be centered at bottom left rather than top left (and the display at top left). not clear if this is a problem
+waves / water

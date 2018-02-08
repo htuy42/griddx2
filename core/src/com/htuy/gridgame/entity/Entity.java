@@ -20,6 +20,10 @@ public interface Entity {
         renderer.circle(transformed.getX(), transformed.getY(), radius);
     }
 
+    void setLocation(Point location);
+
     Point getLocation();
+
+    Entity getSelf();
 
 }

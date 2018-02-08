@@ -7,7 +7,7 @@ import com.google.inject.name.Named;
 public class GradientColorProvider implements ColorProvider {
 
     private final int range;
-    private final int maxHeight;
+    private int maxHeight;
     private final int minHeight;
     private final Color lowColor;
     private final Color highColor;
@@ -38,4 +38,7 @@ public class GradientColorProvider implements ColorProvider {
         return new Color(r, g, b, 1);
     }
 
+    public void setMaxHeight(int maxHeight) {
+        this.maxHeight = maxHeight;
+    }
 }

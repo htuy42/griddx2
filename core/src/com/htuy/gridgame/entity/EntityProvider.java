@@ -27,4 +27,6 @@ public interface EntityProvider {
     void kill(Entity e);
 
     Entity getNearestOfType(Function<Entity, Boolean> tester, Point nearTo);
+
+    int getCountInCell(Point location);
 }

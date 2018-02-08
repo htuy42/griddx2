@@ -41,4 +41,14 @@ public class BasicWorld implements GridWorld {
     public EntityProvider getEntityProvider() {
         return entityProvider;
     }
+
+    @Override
+    public GridProvider getGridProvider() {
+        return gridProvider;
+    }
+
+    @Override
+    public Renderer getRenderer() {
+        return renderer;
+    }
 }

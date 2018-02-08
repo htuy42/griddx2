@@ -8,17 +8,16 @@ import com.htuy.gridgame.main;
 
 import java.util.function.Function;
 
-public class Spawner implements Entity {
+public class Spawner extends BaseEntity {
 
     private final float delay;
     private final Function<Point, Entity> spawn;
     private float deltaSum = 0;
-    private Point location;
 
     public Spawner(float delay, Function<Point, Entity> spawn, Point location) {
+        super(location);
         this.delay = delay;
         this.spawn = spawn;
-        this.location = location;
     }
 
     @Override
@@ -36,8 +35,4 @@ public class Spawner implements Entity {
         return false;
     }
 
-    @Override
-    public Point getLocation() {
-        return location;
-    }
 }

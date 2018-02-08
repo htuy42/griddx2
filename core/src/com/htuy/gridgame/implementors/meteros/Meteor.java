@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.htuy.gridgame.display.Display;
+import com.htuy.gridgame.entity.BaseEntity;
 import com.htuy.gridgame.entity.Entity;
 import com.htuy.gridgame.entity.EntityProvider;
 import com.htuy.gridgame.entity.MovableEntity;
@@ -19,9 +20,7 @@ public class Meteor extends MovableEntity {
     Vector2 path;
 
     public Meteor(Point loc, Point dest) {
-        super(new Point(loc.getX(), loc.getY()));
-        x = loc.getX();
-        y = loc.getY();
+        super(new BaseEntity(loc));
         this.dest = dest;
         this.path = new Vector2(dest.getX() - x, dest.getY() - y);
         path.setLength(MeterosModule.METEOR_SPEED);

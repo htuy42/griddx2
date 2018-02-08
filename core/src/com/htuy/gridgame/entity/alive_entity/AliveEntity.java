@@ -3,18 +3,17 @@ package com.htuy.gridgame.entity.alive_entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.htuy.gridgame.display.Display;
-import com.htuy.gridgame.entity.Entity;
+import com.htuy.gridgame.entity.BaseEntity;
 import com.htuy.gridgame.entity.EntityProvider;
 import com.htuy.gridgame.geom_tools.Point;
 import com.htuy.gridgame.gridprovider.GridProvider;
 import com.htuy.gridgame.main;
 
-public class AliveEntity implements Entity {
+public class AliveEntity extends BaseEntity {
 
     Color color;
     float size;
 
-    Point location;
     float energy;
     MovementDecider mover;
     EnergizeDecider energizer;
@@ -25,9 +24,9 @@ public class AliveEntity implements Entity {
 
     protected AliveEntity(Color color, float size, Point location, float energy, MovementDecider mover, EnergizeDecider energizer, ChildMaker childMaker, int babyThreshold,
                           float eatScalar) {
+        super(location);
         this.color = color;
         this.size = size;
-        this.location = location;
         this.energy = energy;
         this.mover = mover;
         this.energizer = energizer;
@@ -59,8 +58,8 @@ public class AliveEntity implements Entity {
             Point curLoc = getLocation();
             Point newLocation = mover.move(this, grid, entities);
             entities.updateEntityLocation(this, newLocation);
-            location = newLocation;
-            energy -= location.manhattanDistanceTo(curLoc) * .1f * eatScalar;
+            setLocation(newLocation);
+            energy -= getLocation().manhattanDistanceTo(curLoc) * .1f * eatScalar;
             timeSinceMove = 0;
         }
     }
@@ -69,14 +68,9 @@ public class AliveEntity implements Entity {
         if (energy > babyThreshold) {
             energy /= 3;
             AliveEntity child = childMaker.makeChild(this, grid, entities);
-            child.location = grid.randomAdjoiningLocations(location);
+            child.setLocation(grid.randomAdjoiningLocations(getLocation()));
             entities.spawnAtNextTick(child);
         }
-    }
-
-    @Override
-    public Point getLocation() {
-        return location;
     }
 
     public void addEnergy(int amount) {

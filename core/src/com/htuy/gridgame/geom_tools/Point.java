@@ -64,10 +64,7 @@ public class Point {
 
 
     public double trueDistanceTo(Point other) {
-        int dx = other.getX() - x;
-        int dy = other.getY() - y;
-
-        return Math.sqrt(dx * dx + dy * dy);
+        return Math.sqrt(sqDistanceTo(other));
     }
 
     @Override
@@ -102,5 +99,11 @@ public class Point {
 
     public Point withX(int x) {
         return new Point(x, y);
+    }
+
+    public float sqDistanceTo(Point loc) {
+        int dx = loc.getX() - x;
+        int dy = loc.getY() - y;
+        return dx * dx + dy * dy;
     }
 }

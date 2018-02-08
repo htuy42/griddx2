@@ -17,10 +17,14 @@ public class GravityFaller implements Entity {
 
     private boolean towards;
 
-    public GravityFaller(MovableEntity entity, boolean towards) {
-        this.inner = entity;
+    public GravityFaller(Entity entity, boolean towards) {
         speed = new Vector2(0, 0);
         this.towards = towards;
+        if (entity instanceof MovableEntity) {
+            this.inner = (MovableEntity) entity;
+        } else {
+            this.inner = new MovableEntity(entity);
+        }
     }
 
     @Override
@@ -38,20 +42,20 @@ public class GravityFaller implements Entity {
             doDownGravity();
         }
         doFriction();
-        inner.move(speed.x, speed.y);
         inner.tick(grid, entities);
+        inner.move(speed.x, speed.y);
+
         return false;
     }
 
-    private void doTowardsGravity() {
-        Point loc = getLocation();
-        Vector2 direction = new Vector2(Physics.GRAVITY_CENTER.getX() - loc.getX(), Physics.GRAVITY_CENTER.getY() - loc.getY());
-        direction.setLength2(Physics.GRAVITY_SPEED);
-        speed.x += direction.x;
-        speed.y += direction.y;
-        if (speed.len2() > Physics.TERMINAL_VELOCITY_SQ) {
-            speed.setLength2(Physics.TERMINAL_VELOCITY_SQ);
-        }
+    @Override
+    public void setLocation(Point location) {
+        inner.setLocation(location);
+    }
+
+    @Override
+    public Entity getSelf() {
+        return inner.getSelf();
     }
 
     private void doDownGravity() {
@@ -68,5 +72,29 @@ public class GravityFaller implements Entity {
     @Override
     public Point getLocation() {
         return inner.getLocation();
+    }
+
+    private void doTowardsGravity() {
+        Point loc = getLocation();
+        for (Entity e : Physics.GRAVITY_CENTERS) {
+            Point p = e.getLocation();
+            Vector2 direction = new Vector2(p.getX() - loc.getX(), p.getY() - loc.getY());
+            float dst = 0;
+            if (Physics.FORCE_LAWS == 2) {
+                dst = p.sqDistanceTo(loc);
+            } else {
+                double m = p.trueDistanceTo(loc);
+                dst = 1;
+                for (int x = 0; x < Physics.FORCE_LAWS; x++) {
+                    dst *= m;
+                }
+            }
+            direction.setLength2(Physics.GRAVITY_SPEED / dst);
+            speed.x += direction.x;
+            speed.y += direction.y;
+            if (speed.len2() > Physics.TERMINAL_VELOCITY_SQ) {
+                speed.setLength2(Physics.TERMINAL_VELOCITY_SQ);
+            }
+        }
     }
 }

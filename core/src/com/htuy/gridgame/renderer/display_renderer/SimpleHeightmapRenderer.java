@@ -32,4 +32,8 @@ public class SimpleHeightmapRenderer implements Renderer {
         renderer.setColor(colorProvider.retrieve(c.getHeight()));
         renderer.rect(x * cellSize, y * cellSize, cellSize, cellSize);
     }
+
+    public void clearMap() {
+        this.colorProvider.clear();
+    }
 }

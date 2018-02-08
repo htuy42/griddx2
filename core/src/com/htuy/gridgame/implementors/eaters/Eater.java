@@ -21,6 +21,6 @@ public class Eater extends AliveEntity {
                 self.addEnergy(loc.getHeight());
                 loc.setHeight(0);
             }
-        }, new CopyBirther(), 50, 1.5f);
+        }, new CopyBirther(), 50, 5.0f);
     }
 }

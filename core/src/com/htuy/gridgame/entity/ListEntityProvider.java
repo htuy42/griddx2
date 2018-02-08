@@ -52,17 +52,17 @@ public class ListEntityProvider implements EntityProvider {
         for (Entity e : entities) {
             if (e.tick(provider, this)) {
                 toKill.add(e);
-                entitiesLocations.get(e.getLocation()).remove(e);
+                entitiesLocations.get(e.getLocation()).remove(e.getSelf());
                 allOfTypes.remove(e.getClass());
             }
         }
         entities.removeAll(toKill);
         for (Entity e : toKill) {
-            entitiesLocations.get(e.getLocation()).remove(e);
+            entitiesLocations.get(e.getLocation()).remove(e.getSelf());
         }
         for (Entity e : toSpawn) {
             entities.add(e);
-            entitiesLocations.get(e.getLocation()).add(e);
+            entitiesLocations.get(e.getLocation()).add(e.getSelf());
             allOfTypes.remove(e.getClass());
         }
         toKill.clear();
@@ -103,8 +103,8 @@ public class ListEntityProvider implements EntityProvider {
 
     @Override
     public void updateEntityLocation(Entity e, Point newLocation) {
-        entitiesLocations.get(e.getLocation()).remove(e);
-        entitiesLocations.get(newLocation).add(e);
+        entitiesLocations.get(e.getSelf().getLocation()).remove(e.getSelf());
+        entitiesLocations.get(newLocation).add(e.getSelf());
     }
 
     @Override
@@ -129,5 +129,10 @@ public class ListEntityProvider implements EntityProvider {
             }
         });
         return result[0];
+    }
+
+    @Override
+    public int getCountInCell(Point location) {
+        return entitiesLocations.get(location).size();
     }
 }
