@@ -72,36 +72,94 @@ public class Ngon extends BaseEntity {
         shape.setOrigin(origin.getX(), origin.getY());
     }
 
-    public float[] vertical_reflect(float[] points) {
-//        points[i] = tX;
-//        points[i+1] = tY;
-        int size = points.length;
-        float[] new_points = new float[size];
-        boolean past = false;
-        int e = (((size / 2) + 1) % 2);
-        int i = 0;
-        int k = 1;
-        while (i < size) {
-            if (past) {
-                new_points[i - 2 * k] = points[i];
-                new_points[i - 1 * k] = points[i + 1];
-                k += 1;
-            } else {
-                new_points[size - i - 1] = points[i + 1];
-                new_points[size - i - 2] = points[i];
-            }
-//            if(!past && points[i] == tX && points[i+1] == tY){
-//                past = true;
-//            }
-            if (!past && (i == ((size / 2) - e))) {
-                past = true;
-            }
-            i += 2;
-        }
+//     public float[] vertical_reflect_old(float[] points) {
+// //        points[i] = tX;
+// //        points[i+1] = tY;
+//         int size = points.length;
+//         float[] new_points = new float[size];
+//         boolean past = false;
+//         int e = (((size / 2) + 1) % 2);
+//         int i = 0;
+//         int k = 1;
+//         while (i < size) {
+//             if (past) {
+//                 new_points[i - 2 * k] = points[i];
+//                 new_points[i - 1 * k] = points[i + 1];
+//                 k += 1;
+//             } else {
+//                 new_points[size - i - 1] = points[i + 1];
+//                 new_points[size - i - 2] = points[i];
+//             }
+// //            if(!past && points[i] == tX && points[i+1] == tY){
+// //                past = true;
+// //            }
+//             if (!past && (i == ((size / 2) - e))) {
+//                 past = true;
+//             }
+//             i += 2;
+//         }
 
         return new_points;
 
     }
+
+     public static int find_top(float[] points) {
+        int largest_i = 0;  
+        for(int i = 0; i < points.length; i += 2) {
+            if(points[i] > points[largest_i]) {
+                largest_i = i; 
+            }
+        }
+        return largest_i; 
+    }
+
+    public static int find_swap(float x, float[] points) {
+        boolean found_first = false; 
+        for(int i = 0; i < points.length; i += 2) {
+            if(points[i] == x) {
+                if(found_first) {
+                    return i; 
+                }
+                found_first = true; 
+            }
+        }
+        // not found
+        return -1; 
+    }
+    
+    public static float[] vertical_reflect(float[] points) {
+        int size = points.length;
+        float[] new_points = new float[size];
+        int odd = ((size / 2) % 2); 
+        int num_symmetries = (size - odd) / 2; // technically this is the number of symmetries * 2
+        int index_top = 0; 
+        if(odd == 1) {
+            index_top = find_top(points); 
+            new_points[index_top] = points[index_top]; 
+            new_points[index_top + 1] = points[index_top + 1]; 
+        }
+        List already_seen = new LinkedList(); 
+        int times = 0;
+        for(int i = 0; i < size && times < num_symmetries; i += 2, times += 1) {
+            if(odd == 1 && i == index_top) {
+                times -= 1; 
+                continue; 
+            }
+            float curr_x = points[i]; 
+            if(already_seen.contains(curr_x)) {
+                continue; 
+            }
+            already_seen.add(curr_x); 
+            int index = find_swap(curr_x, points); 
+            new_points[index] = curr_x;
+            new_points[index + 1] = points[i + 1]; 
+            new_points[i] = points[index]; 
+            new_points[i + 1] = points[index + 1]; 
+        }
+        return new_points; 
+    
+    }
+
 
     public List<Transform> collapseSequence(List<Transform> sequence) {
 //        Ngon real = new Ngon(new Point(0,0),sides);
