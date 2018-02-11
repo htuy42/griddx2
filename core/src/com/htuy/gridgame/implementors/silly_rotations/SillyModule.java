@@ -15,7 +15,8 @@ import com.htuy.gridgame.world.GridWorld;
 import com.htuy.gridgame.world.WorldBuilder;
 
 public class SillyModule extends AbstractModule {
-    public static Ngon gon = new Ngon(Point.randomPoint(new View(1000, 1000)), 4);
+    public static Ngon gon = new Ngon(Point.randomPoint(new View(1000, 1000)), 7);
+    private static int qdDir = 0;
 
     public static Module getInstance() {
         return Modules.override(BasicDisplayModule.getInstance()).with(new SillyModule());
@@ -27,6 +28,7 @@ public class SillyModule extends AbstractModule {
         bind(Integer.class).annotatedWith(Names.named("View Width, Tiles")).toInstance(500);
         bind(Integer.class).annotatedWith(Names.named("View Height, Tiles")).toInstance(500);
         Point gravityMouse = new Point(0, 0);
+
         bind(InputFunctions.class).toInstance(new InputFunctions() {
             @Override
             public void bindInitialInputFunctions(InputProvider inputProvider, GridWorld world) {
@@ -48,6 +50,17 @@ public class SillyModule extends AbstractModule {
                     @Override
                     public boolean trigger() {
                         gon.reflect();
+//                        List<Transform> todo = ImmutableList.of(
+//                                new Transform.ReflectTransform(),
+//                                new Transform.RotateTransform(1));
+//                        List<Transform> equivalence = gon.collapseSequence(todo);
+//                        for(Transform t : equivalence){
+//                            System.out.println(t.toString());
+//                        }
+//                        System.out.println("Is the same as");
+//                        for(Transform t : todo){
+//                            System.out.println(t.toString());
+//                        }
                         return false;
                     }
                 });

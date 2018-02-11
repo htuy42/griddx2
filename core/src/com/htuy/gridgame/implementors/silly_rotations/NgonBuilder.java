@@ -15,5 +15,6 @@ public class NgonBuilder implements WorldBuilder {
     @Override
     public void buildEntities(GridProvider provider, EntityProvider entities) {
         entities.spawnAtNextTick(gon);
+
     }
 }

@@ -17,6 +17,7 @@ public class BasicInputProvider implements InputProvider {
     private final List<MouseLocListener> clickListeners;
     private final List<MouseLocListener> moveListeners;
     private final Multimap<Integer, KeyDownListener> keyDownListeners;
+    //    private final List<NumberTypedListener> numberTypedListeners;
     private Point mouseGridLoc;
 
     @Inject
@@ -57,6 +58,10 @@ public class BasicInputProvider implements InputProvider {
     @Override
     public boolean keyUp(int keycode) {
         return false;
+    }
+
+    public void registerNumberTypedListener() {
+
     }
 
     @Override
