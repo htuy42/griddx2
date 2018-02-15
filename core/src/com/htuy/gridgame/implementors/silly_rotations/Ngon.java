@@ -11,10 +11,7 @@ import com.htuy.gridgame.entity.BaseEntity;
 import com.htuy.gridgame.entity.EntityProvider;
 import com.htuy.gridgame.geom_tools.Point;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Ngon extends BaseEntity {
 
@@ -98,10 +95,10 @@ public class Ngon extends BaseEntity {
 //             }
 //             i += 2;
 //         }
-
-        return new_points;
-
-    }
+//
+//        return new_points;
+//
+//    }
 
      public static int find_top(float[] points) {
         int largest_i = 0;  
@@ -113,51 +110,53 @@ public class Ngon extends BaseEntity {
         return largest_i; 
     }
 
-    public static int find_swap(float x, float[] points) {
-        boolean found_first = false; 
-        for(int i = 0; i < points.length; i += 2) {
-            if(points[i] == x) {
-                if(found_first) {
-                    return i; 
-                }
-                found_first = true; 
-            }
-        }
-        // not found
-        return -1; 
-    }
-    
     public static float[] vertical_reflect(float[] points) {
+        for (float f : points) {
+            System.out.println(f);
+        }
         int size = points.length;
         float[] new_points = new float[size];
-        int odd = ((size / 2) % 2); 
+        int odd = ((size / 2) % 2);
         int num_symmetries = (size - odd) / 2; // technically this is the number of symmetries * 2
-        int index_top = 0; 
+        int index_top = 0;
         if(odd == 1) {
-            index_top = find_top(points); 
-            new_points[index_top] = points[index_top]; 
-            new_points[index_top + 1] = points[index_top + 1]; 
+            index_top = find_top(points);
+            new_points[index_top] = points[index_top];
+            new_points[index_top + 1] = points[index_top + 1];
         }
-        List already_seen = new LinkedList(); 
+        List already_seen = new LinkedList();
         int times = 0;
         for(int i = 0; i < size && times < num_symmetries; i += 2, times += 1) {
             if(odd == 1 && i == index_top) {
-                times -= 1; 
-                continue; 
+                times -= 1;
+                continue;
             }
-            float curr_x = points[i]; 
+            float curr_x = points[i];
             if(already_seen.contains(curr_x)) {
-                continue; 
+                continue;
             }
-            already_seen.add(curr_x); 
-            int index = find_swap(curr_x, points); 
+            already_seen.add(curr_x);
+            int index = find_swap(curr_x, points);
             new_points[index] = curr_x;
-            new_points[index + 1] = points[i + 1]; 
-            new_points[i] = points[index]; 
-            new_points[i + 1] = points[index + 1]; 
+            new_points[index + 1] = points[i + 1];
+            new_points[i] = points[index];
+            new_points[i + 1] = points[index + 1];
         }
-        return new_points; 
-    
+        return new_points;
+
+    }
+
+    public static int find_swap(float x, float[] points) {
+        boolean found_first = false;
+        for (int i = 1; i < points.length; i += 2) {
+            if (Math.abs(points[i] - x) < 1.0) {
+                if (found_first) {
+                    return i;
+                }
+                found_first = true;
+            }
+        }
+        return -1;
     }
 
 

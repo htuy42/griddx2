@@ -15,7 +15,7 @@ import com.htuy.gridgame.world.GridWorld;
 import com.htuy.gridgame.world.WorldBuilder;
 
 public class SillyModule extends AbstractModule {
-    public static Ngon gon = new Ngon(Point.randomPoint(new View(1000, 1000)), 7);
+    public static Ngon gon = new Ngon(Point.randomPoint(new View(1000, 1000)), 3);
     private static int qdDir = 0;
 
     public static Module getInstance() {

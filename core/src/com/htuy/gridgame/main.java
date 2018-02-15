@@ -23,7 +23,6 @@ public class main extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-
         Injector injector = Guice.createInjector(SillyModule.getInstance());
         world = injector.getInstance(GridWorld.class);
         inputRegistry = injector.getInstance(InputProvider.class);
