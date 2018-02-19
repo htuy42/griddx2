@@ -1,6 +1,8 @@
 package com.htuy.gridgame.implementors.silly_rotations;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
@@ -15,7 +17,8 @@ import com.htuy.gridgame.world.GridWorld;
 import com.htuy.gridgame.world.WorldBuilder;
 
 public class SillyModule extends AbstractModule {
-    public static Ngon gon = new Ngon(Point.randomPoint(new View(1000, 1000)), 3);
+    public static BitmapFont font = new BitmapFont();
+    public static Ngon gon = new Ngon(Point.randomPoint(new View(1, 1)), 3, "the dog in the mouse \n hat hat");
     private static int qdDir = 0;
 
     public static Module getInstance() {
@@ -46,21 +49,19 @@ public class SillyModule extends AbstractModule {
                         return false;
                     }
                 });
-                inputProvider.registerKeyDownListener(Input.Keys.M, new KeyDownListener() {
+                inputProvider.registerKeyDownListener(Input.Keys.F, new KeyDownListener() {
                     @Override
                     public boolean trigger() {
+
                         gon.reflect();
-//                        List<Transform> todo = ImmutableList.of(
-//                                new Transform.ReflectTransform(),
-//                                new Transform.RotateTransform(1));
-//                        List<Transform> equivalence = gon.collapseSequence(todo);
-//                        for(Transform t : equivalence){
-//                            System.out.println(t.toString());
-//                        }
-//                        System.out.println("Is the same as");
-//                        for(Transform t : todo){
-//                            System.out.println(t.toString());
-//                        }
+                        return false;
+                    }
+                });
+                inputProvider.registerKeyDownListener(Input.Keys.S, new KeyDownListener() {
+                    @Override
+                    public boolean trigger() {
+                        MyTextInputListener listener = new MyTextInputListener();
+                        Gdx.input.getTextInput(listener, "Type some stiff!", "", "");
                         return false;
                     }
                 });
