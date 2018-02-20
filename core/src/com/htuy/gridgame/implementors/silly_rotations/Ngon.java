@@ -16,23 +16,28 @@ import java.util.*;
 
 public class Ngon extends BaseEntity {
 
-    private int sides;
+    private final boolean isNormal;
+    public int sides;
+    public String descr;
     private Polygon shape;
-    private List<Color> colors = new ArrayList<>();
+    List<Color> colors = new ArrayList<>();
     private Point origin;
     private float tX = 0;
     private float tY = 0;
-    private String descr;
 
-    public Ngon(Point location, int sides, String descr) {
+    public Ngon(Point location, int sides, String descr, boolean isNormal) {
         super(location);
         this.sides = sides;
         this.descr = descr;
+        this.isNormal = isNormal;
         shape = new Polygon();
         float[] array = new float[sides * 2];
         List<Float> vertices = new ArrayList<>();
-        Point curPoint = new Point(200, 50);
-        Vector2 move = new Vector2(100, 0);
+        Point curPoint = new Point(150, 50);
+        if (!isNormal) {
+            curPoint = new Point(450, 50);
+        }
+        Vector2 move = new Vector2(50, 0);
         float smx = 0;
         float smy = 0;
         float mxX = -10000;
@@ -58,12 +63,15 @@ public class Ngon extends BaseEntity {
 
     private Color randomColor() {
         Random r = new Random();
+        return new Color(makeBigger((float) r.nextDouble()), makeBigger((float) r.nextDouble()), makeBigger((float) r.nextDouble()), (float) 1.0);
+    }
 
-        return new Color((float) r.nextDouble(), (float) r.nextDouble(), (float) r.nextDouble(), (float) 1.0);
+    private float makeBigger(float f) {
+        return Math.min(1.0f, f + .25f);
     }
 
     public static List<Transform> collapseSequence(List<Transform> sequence, int sides) {
-        Ngon real = new Ngon(new Point(0, 0), sides, "");
+        Ngon real = new Ngon(new Point(0, 0), sides, "", true);
         for (Transform t : sequence) {
             t.perform(real);
         }
@@ -71,19 +79,13 @@ public class Ngon extends BaseEntity {
         return allTransforms(real).get(new FloatRapper(real.shape.getTransformedVertices()));
     }
 
-    public void reflect() {
-        float[] array = vertical_reflect(shape.getTransformedVertices());
-        shape = new Polygon(array);
-        shape.setOrigin(origin.getX(), origin.getY());
-    }
-
     public static HashMap<FloatRapper, List<Transform>> allTransforms(Ngon gon) {
         HashMap<FloatRapper, List<Transform>> res = new HashMap<>();
         Transform flip = new Transform.ReflectTransform();
         for (int x = 0; x < gon.sides; x++) {
             Transform rot = new Transform.RotateTransform(x);
-            Ngon n = new Ngon(new Point(0, 0), gon.sides, "");
-            Ngon n2 = new Ngon(new Point(0, 0), gon.sides, "");
+            Ngon n = new Ngon(new Point(0, 0), gon.sides, "", true);
+            Ngon n2 = new Ngon(new Point(0, 0), gon.sides, "", true);
             rot.perform(n);
             res.put(new FloatRapper(n.shape.getTransformedVertices()), ImmutableList.of(rot));
             rot.perform(n2);
@@ -93,32 +95,19 @@ public class Ngon extends BaseEntity {
         return res;
     }
 
-    public void rotate(int intervals) {
-        shape.rotate(360.0f * intervals / sides);
-    }
-
-    public int find_swap(float y, float[] points) {
-        boolean found_first = false;
-        for(int i = 0; i < points.length; i += 2) {
-            if (Math.abs(points[i + 1] - y) < 2.5 * this.sides) {
-                if (found_first) {
-                    return i;
-                }
-                found_first = true;
-            }
-        }
-        // not found
-        return -1;
+    public void reflect() {
+        float[] array = vertical_reflect(shape.getTransformedVertices());
+        shape = new Polygon(array);
+        shape.setOrigin(origin.getX(), origin.getY());
     }
 
     public float[] vertical_reflect(float[] points) {
-        System.out.println(Arrays.toString(points));
         int size = points.length;
         float[] new_points = new float[size];
         int odd = ((size / 2) % 2);
         int num_symmetries = (size - odd) / 2; // technically this is the number of symmetries * 2
         int index_top = 0;
-        if(odd == 1) {
+        if (odd == 1) {
             index_top = find_top(points);
             new_points[index_top] = points[index_top];
             new_points[index_top + 1] = points[index_top + 1];
@@ -126,8 +115,8 @@ public class Ngon extends BaseEntity {
         LinkedList<Float> already_seen = new LinkedList<Float>();
         //boolean[] points_visited = new boolean[size];
         int times = 0;
-        for(int i = 0; i < size && times < num_symmetries; i += 2, times += 1) {
-            if(odd == 1 && i == index_top) {
+        for (int i = 0; i < size && times < num_symmetries; i += 2, times += 1) {
+            if (odd == 1 && i == index_top) {
                 times -= 1;
                 continue;
             }
@@ -143,7 +132,6 @@ public class Ngon extends BaseEntity {
 //                continue;
 //            }
             //points_visited[index] = true;
-            System.out.println(i);
             new_points[index] = curr_x;
             new_points[index + 1] = points[i + 1];
             new_points[i] = points[index];
@@ -190,6 +178,47 @@ public class Ngon extends BaseEntity {
         return closest;
     }
 
+    public void rotate(int intervals) {
+        shape.rotate(360.0f * intervals / sides);
+    }
+
+    public int find_swap(float y, float[] points) {
+        boolean found_first = false;
+        for (int i = 0; i < points.length; i += 2) {
+            if (Math.abs(points[i + 1] - y) < 2.5 * this.sides) {
+                if (found_first) {
+                    return i;
+                }
+                found_first = true;
+            }
+        }
+        // not found
+        return -1;
+    }
+
+    @Override
+    public void render(EntityProvider entities, Display display, ShapeRenderer renderer) {
+        SpriteBatch spriteBatch;
+        spriteBatch = new SpriteBatch();
+        for (int x = 0; x < sides; x++) {
+            Point p = new Point((int) shape.getTransformedVertices()[x * 2], (int) shape.getTransformedVertices()[x * 2 + 1]);
+            renderer.setColor(colors.get(x));
+            renderer.circle(p.getX(), p.getY(), 10);
+            renderer.end();
+            spriteBatch.begin();
+            SillyModule.font.setColor(Color.BLACK);
+            SillyModule.font.draw(spriteBatch, "" + (x + 1), p.getX() - 4, p.getY() + 5);
+            spriteBatch.end();
+            renderer.begin(ShapeRenderer.ShapeType.Filled);
+        }
+        if (isNormal) {
+            spriteBatch.begin();
+            SillyModule.font.setColor(Color.BLACK);
+            SillyModule.font.draw(spriteBatch, descr, 10, 630);
+            spriteBatch.end();
+        }
+    }
+
     private static class FloatRapper {
         private float[] rapper;
 
@@ -211,21 +240,5 @@ public class Ngon extends BaseEntity {
             return true;
         }
 
-    }
-
-    @Override
-    public void render(EntityProvider entities, Display display, ShapeRenderer renderer) {
-        for (int x = 0; x < sides; x++) {
-            Point p = new Point((int) shape.getTransformedVertices()[x * 2], (int) shape.getTransformedVertices()[x * 2 + 1]);
-            renderer.setColor(colors.get(x));
-            renderer.circle(p.getX(), p.getY(), 10);
-        }
-        SpriteBatch spriteBatch;
-        spriteBatch = new SpriteBatch();
-
-        spriteBatch.begin();
-        SillyModule.font.setColor(Color.BLACK);
-        SillyModule.font.draw(spriteBatch, descr, 10, 480);
-        spriteBatch.end();
     }
 }

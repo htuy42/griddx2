@@ -13,8 +13,8 @@ public class Parser {
         input = input.replaceAll("\\s", "");
         char[] results = input.toCharArray();
         int x = 0;
-        int sides = results[0];
-        x += 1;
+//        int sides = Integer.parseInt(""+results[0]);
+//        x += 1;
         while (x < results.length) {
             if (results[x] == 'r') {
                 x += handleR(res, results, x);
@@ -23,17 +23,17 @@ public class Parser {
                 x++;
             }
         }
-        return new Pair(sides, res);
+        return new Pair(0, res);
     }
 
     private static int handleR(List<Transform> res, char[] input, int x) {
-        if (x + 1 > input.length) {
+        if (x + 1 >= input.length) {
             res.add(new Transform.RotateTransform(1));
             return 1;
         }
         char nxt = input[x + 1];
         if (Character.isDigit(nxt)) {
-            if (x + 2 > input.length) {
+            if (x + 2 >= input.length) {
                 res.add(new Transform.RotateTransform(Integer.parseInt("" + nxt)));
                 return 2;
             } else {
