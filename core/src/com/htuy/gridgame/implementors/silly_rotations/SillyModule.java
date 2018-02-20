@@ -47,7 +47,7 @@ public class SillyModule extends AbstractModule {
                 inputProvider.registerKeyDownListener(Input.Keys.L, new KeyDownListener() {
                     @Override
                     public boolean trigger() {
-                        otherGon.rotate(1);
+                        otherGon.rotate(-1);
                         return false;
                     }
                 });
@@ -63,7 +63,7 @@ public class SillyModule extends AbstractModule {
                     @Override
                     public boolean trigger() {
                         MyTextInputListener listener = new MyTextInputListener();
-                        Gdx.input.getTextInput(listener, "Type some stiff!", "", "");
+                        Gdx.input.getTextInput(listener, "Type some symmetries!", "", "");
                         return false;
                     }
                 });
@@ -71,7 +71,7 @@ public class SillyModule extends AbstractModule {
                     @Override
                     public boolean trigger() {
                         MyTextInputListener1 listener = new MyTextInputListener1();
-                        Gdx.input.getTextInput(listener, "Type number of sides", "", "");
+                        Gdx.input.getTextInput(listener, "Type number of sides.", "", "");
                         return false;
                     }
                 });

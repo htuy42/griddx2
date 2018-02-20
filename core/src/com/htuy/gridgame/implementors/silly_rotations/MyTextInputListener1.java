@@ -10,7 +10,7 @@ public class MyTextInputListener1 implements Input.TextInputListener {
         SillyModule.provider.kill(SillyModule.gon);
         SillyModule.provider.kill(SillyModule.otherGon);
         SillyModule.otherGon = new Ngon(new Point(0, 0), numSides, "", false);
-        SillyModule.gon = new Ngon(new Point(0, 0), numSides, "Press s to input a sequence", true);
+        SillyModule.gon = new Ngon(new Point(0, 0), numSides, "Press s to input a sequence of symmetries.", true);
         SillyModule.otherGon.colors = SillyModule.gon.colors;
         SillyModule.provider.spawnAtNextTick(SillyModule.gon);
         SillyModule.provider.spawnAtNextTick(SillyModule.otherGon);

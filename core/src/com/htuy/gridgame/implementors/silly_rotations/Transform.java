@@ -13,7 +13,7 @@ public interface Transform {
 
         public void perform(Ngon gon) {
             for (int x = 0; x < amount; x++) {
-                gon.rotate(1);
+                gon.rotate(-1);
             }
         }
 

@@ -185,7 +185,7 @@ public class Ngon extends BaseEntity {
     public int find_swap(float y, float[] points) {
         boolean found_first = false;
         for (int i = 0; i < points.length; i += 2) {
-            if (Math.abs(points[i + 1] - y) < 2.5 * this.sides) {
+            if (Math.abs(points[i + 1] - y) < .5 * this.sides) {
                 if (found_first) {
                     return i;
                 }
