@@ -1,6 +1,5 @@
 package com.htuy.gridgame.input;
 
-import com.badlogic.gdx.Input;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
@@ -51,7 +50,7 @@ public class BasicInputProvider implements InputProvider {
 
     @Override
     public boolean keyDown(int keycode) {
-//        iterateApply(keyDownListeners.get(keycode));
+        iterateApply(keyDownListeners.get(keycode));
         return true;
     }
 
@@ -66,8 +65,8 @@ public class BasicInputProvider implements InputProvider {
 
     @Override
     public boolean keyTyped(char character) {
-        System.out.println(character);
-        iterateApply(keyDownListeners.get(Input.Keys.valueOf(("" + character).toUpperCase())));
+//        System.out.println(character);
+//        iterateApply(keyDownListeners.get(Input.Keys.valueOf(("" + character).toUpperCase())));
         return true;
     }
 
